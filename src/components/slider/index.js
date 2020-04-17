@@ -29,7 +29,7 @@ function Slider(props) {
               return (
                 <div className="swiper-slide" key={index}>
                   <div className="slider-nav">
-                    <img src={item.imgUrl} width="100%" height="100%" alt="推荐"/>
+                    <img src={item.pic} width="100%" height="100%" alt="推荐"/>
                   </div>
                 </div>
               )

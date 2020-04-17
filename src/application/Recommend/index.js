@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react';
-import Slider from '../../components/slider';
 import { useSelector, useDispatch } from 'react-redux';
+import Slider from '../../components/slider';
 import { actions } from './store';
 
 const Recommend = () => {
   const dispatch = useDispatch();
-  const { getBanner, getRecommendList } = actions;
-  const { bannerList, recommendList } = useSelector(state => ({
+  const { getBanner, getRecommendList, changeLoading } = actions;
+  const { bannerList, recommendList, loading } = useSelector(state => ({
+    loading: state.getIn(['recommend', 'loading']),
     bannerList: state.getIn(['recommend', 'bannerList']).toJS(),
     recommendList: state.getIn(['recommend', 'recommendList']).toJS()
   }));
 
-  const banner = [1, 2, 3, 4].map(() => {
-    return { imgUrl: "https://w.wallhaven.cc/full/ox/wallhaven-oxv6gl.png" }
-  });
+  console.log('bannerList__', bannerList, loading);
+
+  // const banner = [1, 2, 3, 4].map(() => {
+  //   return { imgUrl: "https://w.wallhaven.cc/full/ox/wallhaven-oxv6gl.png" }
+  // });
 
   useEffect(() => {
+    dispatch(changeLoading);
     dispatch(getBanner());
     dispatch(getRecommendList());
     // eslint-disable-next-line
@@ -24,11 +28,9 @@ const Recommend = () => {
 
   return (
     <div>
-      <Slider bannerList={banner}></Slider>
+      <Slider bannerList={bannerList}></Slider>
       {
-        recommendList.map(item => {
-          return `<p key=${item}>${item + bannerList[0]}</p>`;
-        })
+        recommendList.slice(0, 3).map(item => item.name).join('\n')
       }
     </div>
   )
