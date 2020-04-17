@@ -6,10 +6,11 @@ import { actions } from './store';
 const Recommend = () => {
   const dispatch = useDispatch();
   const { getBanner, getRecommendList } = actions;
-  const recommendList = useSelector(state => {
-    return state.getIn(['recommend', 'recommendList']);
-  });
-  console.log('recommendList__', recommendList);
+  const { bannerList, recommendList } = useSelector(state => ({
+    bannerList: state.getIn(['recommend', 'bannerList']).toJS(),
+    recommendList: state.getIn(['recommend', 'recommendList']).toJS()
+  }));
+
   const banner = [1, 2, 3, 4].map(() => {
     return { imgUrl: "https://w.wallhaven.cc/full/ox/wallhaven-oxv6gl.png" }
   });
@@ -26,7 +27,7 @@ const Recommend = () => {
       <Slider bannerList={banner}></Slider>
       {
         recommendList.map(item => {
-          return `<p key=${item}>${item}</p>`;
+          return `<p key=${item}>${item + bannerList[0]}</p>`;
         })
       }
     </div>
