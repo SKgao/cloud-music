@@ -14,9 +14,6 @@ import { IconStyle } from './assets/iconfont/iconfont';
 import { GlobalStyle } from  './style';
 import './fix.css';
 
-console.log('routers__', routers);
-console.log('store__', store);
-
 function App() {
   return (
     <Provider store={store}>

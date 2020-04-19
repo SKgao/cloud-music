@@ -10,7 +10,7 @@ const ScrollContainer = styled.div`
 `
 
 const Scroll = forwardRef((props, ref) => {
-  const { bScroll, setBScroll } = useState();
+  const [bScroll, setBScroll] = useState();
   const scrollContainerRef = useRef();
 
   const { direction, click, refresh, bounceTop, bounceBottom } = props;
@@ -32,7 +32,8 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       setBScroll(null);
     }
-  });
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (!bScroll || !onScroll) return;
@@ -99,7 +100,7 @@ const Scroll = forwardRef((props, ref) => {
       { props.children }
     </ScrollContainer>
   )
-})
+});
 
 Scroll.propTypes = {
   direction: PropTypes.oneOf (['vertical', 'horizontal']), // 滚动的方向

@@ -1,8 +1,12 @@
 import React from 'react';
+import Loading from '../../baseUI/loading';
 
 const Singers = () => {
   return (
-    <div>Singers</div>
+    <div>
+      Singers
+      <Loading></Loading>
+    </div>
   )
 }
 

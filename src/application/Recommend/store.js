@@ -7,7 +7,7 @@ import { getBannerRequest, getRecommendListRequest } from '../../api/request';
 const defaultState = fromJS({
   bannerList: [],
   recommendList: [],
-  loading: false
+  isLoading: true
 })
 
 /**
@@ -46,6 +46,11 @@ export const actions = {
         dispatch({
           type: actionTypes.CHANGE_RECOMMEND_LIST,
           data: fromJS(data.result)
+        });
+
+        dispatch({
+          type: actionTypes.CHANGE_LOADING,
+          data: fromJS(false)
         })
       }).catch (err=> {
         console.log ('getRecommendList_error', err);
@@ -59,14 +64,13 @@ export const actions = {
  */
 export const reducer = (state = defaultState, action) => {
   const { type, data } = action;
-  console.log ('state__', state.get('loading'));
   switch (type) {
     case actionTypes.CHANGE_BANNER:
       return state.set('bannerList', data);
     case actionTypes.CHANGE_RECOMMEND_LIST:
       return state.set('recommendList', data);
     case actionTypes.CHANGE_LOADING:
-      return state.set('loading', !state.get('loading'));
+      return state.set('isLoading', data);
     default:
       return state;
   }
