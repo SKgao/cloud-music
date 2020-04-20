@@ -1,12 +1,15 @@
 import React from 'react';
-import Loading from '../../baseUI/loading';
+import Horizen from '../../baseUI/horizen-item';
+import { categoryTypes, alphaTypes } from '../../api/data';
+
+import { NavContainer } from './style';
 
 const Singers = () => {
   return (
-    <div>
-      Singers
-      <Loading></Loading>
-    </div>
+    <NavContainer>
+      <Horizen list={categoryTypes} title={'分类 (默认热门):'}></Horizen>
+      <Horizen list={alphaTypes} title={'首字母:'}></Horizen>
+    </NavContainer>
   )
 }
 
