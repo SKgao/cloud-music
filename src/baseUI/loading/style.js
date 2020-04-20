@@ -8,7 +8,7 @@ const loading = keyframes`
   50% {
     transform: scale(1.0);
   }
-`
+`;
 
 export const LoadingWrapper = styled.div`
   > div {
@@ -28,4 +28,4 @@ export const LoadingWrapper = styled.div`
   > div:nth-child(2) {
     animation-delay: -0.7s;
   }
-`
+`;

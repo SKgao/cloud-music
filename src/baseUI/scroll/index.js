@@ -1,20 +1,55 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import BScroll from 'better-scroll';
+import Loading from '../loading/index';
+import LoadingV2 from '../loading-v2/index';
+
+import { debounce } from '../../utils/index';
 import styled from 'styled-components';
 
 const ScrollContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-`
+`;
+
+const PullUpLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  z-index: 100;
+`;
+
+export const PullDownLoading = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0px;
+  height: 30px;
+  margin: auto;
+  z-index: 100;
+`;
 
 const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState();
   const scrollContainerRef = useRef();
 
   const { direction, click, refresh, bounceTop, bounceBottom } = props;
-  const { onScroll, pullUp, pullDown  } = props;
+  const { onScroll, pullUp, pullDown, pullUpLoading, pullDownLoading } = props;
+
+  // 上拉防抖
+  const pullUpBebounce = useMemo(() => {
+    return debounce(pullUp, 300);
+  }, [pullUp]);
+
+  // 下拉防抖
+  const pullDownBebounce = useMemo(() => {
+    return debounce(pullDown, 300);
+  }, [pullDown]);
 
   useEffect(() => {
     const scroll = new BScroll(scrollContainerRef.current, {
@@ -48,30 +83,32 @@ const Scroll = forwardRef((props, ref) => {
   useEffect(() => {
     if (!bScroll || !pullUp) return;
     // 上拉加载
-    bScroll.on('scrollEnd', () => {
+    const handlePullUp = () => {
       if (bScroll.y <= bScroll.maxScrollY + 100) {
-        pullUp();
+        pullUpBebounce();
       }
-    });
+    };
+    bScroll.on('scrollEnd', handlePullUp);
     // 移除上拉监听
     return () => {
-      bScroll.off('scrollEnd');
+      bScroll.off('scrollEnd', handlePullUp);
     }
-  }, [bScroll, pullUp]);
+  }, [bScroll, pullUp, pullUpBebounce]);
 
   useEffect(() => {
     if (!bScroll || !pullDown) return;
     // 下拉加载
-    bScroll.on('touchEnd', (pos) => {
+    const handlePullDown = (pos) => {
       if (pos.y > 50) {
-        pullDown()
+        pullDownBebounce();
       }
-    });
+    };
+    bScroll.on('touchEnd', handlePullDown);
     // 移除下拉监听
     return () => {
-      bScroll.off('touchEnd');
+      bScroll.off('touchEnd', handlePullDown);
     }
-  }, [bScroll, pullDown]);
+  }, [bScroll, pullDown, pullDownBebounce]);
 
   useEffect(() => {
     if (refresh && bScroll) {
@@ -98,6 +135,14 @@ const Scroll = forwardRef((props, ref) => {
   return (
     <ScrollContainer ref={scrollContainerRef}>
       { props.children }
+      {/* 滑到底部加载动画 */}
+      <PullUpLoading style={{ display: pullUpLoading ? 'block' : 'none' }}>
+        <Loading></Loading>
+      </PullUpLoading>
+      {/* 顶部下拉加载动画 */}
+      <PullDownLoading style={{ display: pullDownLoading ? 'block' : 'none' }}>
+        <LoadingV2></LoadingV2>
+      </PullDownLoading>
     </ScrollContainer>
   )
 });

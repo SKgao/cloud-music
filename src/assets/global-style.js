@@ -8,7 +8,7 @@ const extendClick = () => {
       top: -10px; bottom: -10px; left: -10px; right: -10px;
     };
   `
-}
+};
 
 // 一行文字溢出部分用... 代替
 const noWrap = () => {
@@ -17,7 +17,7 @@ const noWrap = () => {
     overflow: hidden;
     white-space: nowrap;
   `
-}
+};
 
 export default {
   'theme-color': '#d44439',
@@ -30,10 +30,10 @@ export default {
   'font-size-m': '14px',
   'font-size-l': '16px',
   'font-size-ll': '18px',
-  "border-color": '#e4e4e4',
+  'border-color': '#e4e4e4',
   'background-color': '#f2f3f4',
   'background-color-shadow': 'rgba (0, 0, 0, 0.3)',
   'highlight-background-color': '#fff',
   extendClick,
   noWrap
-}
+};

@@ -6,12 +6,14 @@ import Scroll from '../../baseUI/scroll';
 import Loading from '../../baseUI/loading';
 import Slider from '../../components/slider';
 import RecommendList from '../../components/list';
+
 import { actions } from './store';
 import { Content } from './style';
+// actions
+const { getBanner, getRecommendList } = actions;
 
 const Recommend = () => {
   const dispatch = useDispatch();
-  const { getBanner, getRecommendList } = actions;
   const { bannerList, recommendList, isLoading } = useSelector(state => ({
     isLoading: state.getIn(['recommend', 'isLoading']),
     bannerList: state.getIn(['recommend', 'bannerList']).toJS(),
@@ -43,7 +45,7 @@ const Recommend = () => {
           <RecommendList recommendList={recommendList}></RecommendList>
         </div>
       </Scroll>
-      { isLoading ? <Loading></Loading> : null }
+      <Loading show={isLoading}></Loading>
     </Content>
   )
 }
