@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { renderRoutes } from 'react-router-config';
 import { useSelector, useDispatch } from 'react-redux';
 import { forceCheck } from 'react-lazyload';
 
@@ -12,19 +13,13 @@ import { Content } from './style';
 // actions
 const { getBanner, getRecommendList } = actions;
 
-const Recommend = () => {
+const Recommend = (props) => {
   const dispatch = useDispatch();
   const { bannerList, recommendList, isLoading } = useSelector(state => ({
     isLoading: state.getIn(['recommend', 'isLoading']),
     bannerList: state.getIn(['recommend', 'bannerList']).toJS(),
     recommendList: state.getIn(['recommend', 'recommendList']).toJS()
   }));
-
-  console.log('bannerList__', bannerList, isLoading);
-
-  // const banner = [1, 2, 3, 4].map(() => {
-  //   return { imgUrl: "https://w.wallhaven.cc/full/ox/wallhaven-oxv6gl.png" }
-  // });
 
   useEffect(() => {
     if (!bannerList.size) {
@@ -36,7 +31,6 @@ const Recommend = () => {
     // eslint-disable-next-line
   }, []);
 
-
   return (
     <Content>
       <Scroll onScroll={forceCheck}>
@@ -46,6 +40,7 @@ const Recommend = () => {
         </div>
       </Scroll>
       <Loading show={isLoading}></Loading>
+      { renderRoutes(props.route.routes) }
     </Content>
   )
 }

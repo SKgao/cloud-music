@@ -5,6 +5,7 @@ import Home from '../application/Home';
 import Rank from '../application/Rank';
 import Recommend from '../application/Recommend';
 import Singers from '../application/Singers';
+import Album from '../application/Album';
 
 // 路由
 const routers = [
@@ -19,7 +20,13 @@ const routers = [
       },
       {
         path: '/recommend',
-        component: Recommend
+        component: Recommend,
+        routes: [
+          {
+            path: '/recommend/:id',
+            component: Album
+          }
+        ]
       },
       {
         path: '/rank',
