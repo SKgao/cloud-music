@@ -51,8 +51,8 @@ const Rank = (props) => {
                   <img src={item.coverImgUrl} alt=""/>
                   <div className="decorate"></div>
                   <span className="update-frequecy">{item.updateFrequency}</span>
-                  { renderSongList(item.tracks) }
                 </div>
+                { renderSongList(item.tracks) }
               </ListItem>
             )
           })

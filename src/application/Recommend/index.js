@@ -14,6 +14,7 @@ import { Content } from './style';
 const { getBanner, getRecommendList } = actions;
 
 const Recommend = (props) => {
+  console.log('route___', props.route);
   const dispatch = useDispatch();
   const { bannerList, recommendList, isLoading } = useSelector(state => ({
     isLoading: state.getIn(['recommend', 'isLoading']),

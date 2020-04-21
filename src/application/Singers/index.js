@@ -33,9 +33,7 @@ const Singers = () => {
   }));
 
   useEffect(() => {
-    if (!singerList.size) {
-      dispatch(getHotSingerList());
-    }
+    dispatch(getHotSingerList());
     // eslint-disable-next-line
   }, []);
 
@@ -61,7 +59,7 @@ const Singers = () => {
   // 上拉加载更多
   const handlePullUp = () => {
     dispatch(changePullupLoading(true));
-    dispatch(pageCount(pageCount + 1));
+    dispatch(changePageCount(pageCount + 1));
     if (category && alpha) {
       dispatch(getSingerList(category, alpha));
     } else {
@@ -72,7 +70,7 @@ const Singers = () => {
   // 下拉刷新首页
   const handlePullDown = () => {
     dispatch(changePulldownLoading(true));
-    dispatch(pageCount(0));
+    dispatch(changePageCount(0));
     if (category && alpha) {
       dispatch(getSingerList(category, alpha));
     } else {

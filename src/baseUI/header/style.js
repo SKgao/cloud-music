@@ -10,7 +10,7 @@ export const HeaderContainer = styled.div`
   z-index: 100;
   display: flex;
   line-height: 40px;
-  color: ${globalStyle['font-color-light']};
+  // color: ${globalStyle['font-color-light']};
   .back {
     width: 20px;
     font-size: 20px;

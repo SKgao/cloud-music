@@ -6,7 +6,7 @@ const Header = forwardRef((props, ref) => {
   const { title, handleClick } = props;
   return (
     <HeaderContainer ref={ref}>
-      <i className="iconfont back"  onClick={handleClick}>&#xe655;</i>
+      <i className="iconfont back" onClick={handleClick}>&#xe655;</i>
       <h1>{title}</h1>
     </HeaderContainer>
   )

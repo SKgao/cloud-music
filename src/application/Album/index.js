@@ -13,9 +13,9 @@ const Album = (props) => {
   return (
     <CSSTransition
       in={showStatus}
-      delay={300}
-      className="fly"
-      applet={true}
+      timeout={300}
+      classNames="fly"
+      appear={true}
       unmountOnExit
       onExited={props.history.goBack}>
       <Container>

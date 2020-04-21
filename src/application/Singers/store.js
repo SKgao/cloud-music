@@ -37,7 +37,7 @@ export const actions = {
     data: fromJS(data)
   }),
 
-  changeInterLoading: data => ({
+  changeEnterLoading: data => ({
     type: actionTypes.CHANGE_ENTER_LOADING,
     data: fromJS(data)
   }),
@@ -59,13 +59,13 @@ export const actions = {
       const singerList = state().getIn(['singers', 'singerList']).toJS();
       getHotSingerListRequest(pageCount).then(res => {
         console.log('getHotSingerList_res', res);
-        const list = [...singerList, ...res.artists];
-        dispatch(actions.changeSingerList(list));
         if (pageCount === 0) {
-          dispatch(actions.changeInterLoading(false));
-          dispatch(actions.changePullDownLoading(false));
+          dispatch(actions.changeSingerList(res.artists));
+          dispatch(actions.changeEnterLoading(false));
+          dispatch(actions.changePulldownLoading(false));
         } else {
-          dispatch(actions.changePullUpLoading(false));
+          dispatch(actions.changeSingerList([...singerList, ...res.artists]));
+          dispatch(actions.changePullupLoading(false));
         }
       }).catch (err => {
         console.log ('getHotSingerList_error', err);
@@ -80,13 +80,13 @@ export const actions = {
       const singerList = state().getIn(['singers', 'singerList']).toJS();
       getSingerListRequest(category, alpha, pageCount).then(res => {
         console.log('getSingerList_res', res);
-        const list = [...singerList, ...res.artists];
-        dispatch(actions.changeSingerList(list));
         if (pageCount === 0) {
-          dispatch(actions.changeInterLoading(false));
-          dispatch(actions.changePullDownLoading(false));
+          dispatch(actions.changeSingerList(res.artists));
+          dispatch(actions.changeEnterLoading(false));
+          dispatch(actions.changePulldownLoading(false));
         } else {
-          dispatch(actions.changePullUpLoading(false));
+          dispatch(actions.changeSingerList([...singerList, ...res.artists]));
+          dispatch(actions.changePullupLoading(false));
         }
       }).catch (err=> {
         console.log ('moreSingerList_error', err);
