@@ -1,9 +1,94 @@
-import React from 'react';
-import LoadingV2 from '../../baseUI/loading-v2';
+import React, { useEffect } from 'react';
+import { renderRoutes } from 'react-router-config';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Rank = () => {
+import Scroll from '../../baseUI/scroll';
+import Loading from '../../baseUI/loading';
+
+import { actions } from './store';
+import { filterIndex, filterIdx } from '../../utils/index';
+import { RankContainer, List, ListItem, SongList } from './style';
+import { EnterLoading } from '../Singers/style';
+// actions
+const { getRankList } = actions;
+
+const Rank = (props) => {
+  const dispatch = useDispatch();
+  const { rankList, isLoading } = useSelector(state => ({
+    rankList: state.getIn(['rank', 'rankList']).toJS(),
+    isLoading: state.getIn(['rank', 'isLoading'])
+  }));
+  const globalStartIndex = filterIndex(rankList);
+  const officialList = rankList.slice(0, globalStartIndex);
+  const globalList = rankList.slice(globalStartIndex);
+
+  useEffect(() => {
+    if (!rankList.size) {
+      dispatch(getRankList());
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  // 进入详情页
+  const enterDetail = (name) => {
+    const idx = filterIdx(name);
+    if (idx) {
+      console.log(name, idx);
+    } else {
+      console.log('暂无相关数据');
+    }
+  }
+
+  // 渲染榜单数据
+  const renderRankList = (list, global) => {
+    return (
+      <List globalRank={global}>
+        {
+          list.map((item) => {
+            return (
+              <ListItem key={item.coverImgId} tracks={item.tracks} onClick={() => enterDetail(item.name)}>
+                <div className="img-wrapper">
+                  <img src={item.coverImgUrl} alt=""/>
+                  <div className="decorate"></div>
+                  <span className="update-frequecy">{item.updateFrequency}</span>
+                  { renderSongList(item.tracks) }
+                </div>
+              </ListItem>
+            )
+          })
+        }
+      </List>
+    )
+  };
+
+  // 渲染歌曲列表
+  const renderSongList = (list) => {
+    return list.length ? (
+      <SongList>
+        {
+          list.map((item, index) => {
+            return <li key={index}>{index + 1}. {item.first} - {item.second}</li>;
+          })
+        }
+      </SongList>
+    ) : null;
+  };
+
+  const displayStyle = { display: isLoading ? 'show' : 'block' };
+
   return (
-    <div>Rank<LoadingV2></LoadingV2></div>
+    <RankContainer>
+      <Scroll>
+        <div>
+          <h1 className="offical" style={displayStyle}> 官方榜 </h1>
+            { renderRankList(officialList) }
+          <h1 className="global" style={displayStyle}> 全球榜 </h1>
+            { renderRankList(globalList, true) }
+          { isLoading ? <EnterLoading><Loading></Loading></EnterLoading> : null }
+        </div>
+      </Scroll>
+      { renderRoutes(props.route.routes) }
+    </RankContainer>
   )
 }
 

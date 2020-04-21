@@ -33,8 +33,11 @@ const Singers = () => {
   }));
 
   useEffect(() => {
-    dispatch(getHotSingerList());
-  }, [dispatch]);
+    if (!singerList.size) {
+      dispatch(getHotSingerList());
+    }
+    // eslint-disable-next-line
+  }, []);
 
   // 点击歌手种类
   const handleUpdateCategory = val => {

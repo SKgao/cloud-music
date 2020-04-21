@@ -10,7 +10,7 @@ const defaultState = fromJS({
   pullUpLoading: false,
   pullDownLoading: false,
   pageCount: 0
-})
+});
 
 /**
  * actionTypes
@@ -21,7 +21,7 @@ const actionTypes = {
   CHANGE_ENTER_LOADING: 'singers/ENTER_LOADING',
   CHANGE_PULLUP_LOADING: 'singers/PULLUP_LOADING',
   CHANGE_PULLDOWN_LOADING: 'singers/PULLDOWN_LOADING'
-}
+};
 
 /**
  * actions
@@ -93,7 +93,7 @@ export const actions = {
       })
     }
   }
-}
+};
 
 /**
  * reducer
@@ -114,4 +114,4 @@ export const reducer = (state = defaultState, action) => {
     default:
       return state;
   }
-}
+};

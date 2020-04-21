@@ -8,7 +8,7 @@ const defaultState = fromJS({
   bannerList: [],
   recommendList: [],
   isLoading: true
-})
+});
 
 /**
  * actionTypes
@@ -17,7 +17,7 @@ const actionTypes = {
   CHANGE_BANNER: 'recommend/CHANGE_BANNER',
   CHANGE_RECOMMEND_LIST: 'recommend/RECOMMEND_LIST',
   CHANGE_LOADING: 'recommend/CHANGE_LOADING'
-}
+};
 
 /**
  * actions
@@ -29,10 +29,10 @@ export const actions = {
 
   getBanner: () => {
     return (dispatch) => {
-      getBannerRequest().then(data => {
+      getBannerRequest().then(res => {
         dispatch({
           type: actionTypes.CHANGE_BANNER,
-          data: fromJS(data.banners)
+          data: fromJS(res.banners)
         })
       }).catch (err => {
         console.log ('getBanner_error', err);
@@ -42,10 +42,10 @@ export const actions = {
 
   getRecommendList: () => {
     return (dispatch) => {
-      getRecommendListRequest().then(data => {
+      getRecommendListRequest().then(res => {
         dispatch({
           type: actionTypes.CHANGE_RECOMMEND_LIST,
-          data: fromJS(data.result)
+          data: fromJS(res.result)
         });
 
         dispatch({
@@ -57,7 +57,7 @@ export const actions = {
       })
     }
   }
-}
+};
 
 /**
  * reducer
@@ -74,4 +74,4 @@ export const reducer = (state = defaultState, action) => {
     default:
       return state;
   }
-}
+};
