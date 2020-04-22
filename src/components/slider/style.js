@@ -32,4 +32,4 @@ export const SliderContainer = styled.div`
       background-color: ${globalStyle['theme-color']};
     }
   }
-`
+`;

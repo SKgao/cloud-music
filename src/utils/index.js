@@ -29,4 +29,4 @@ export const filterIdx = name => {
     if (RankTypes[key] === name) return key;
   }
   return null;
-}
+};

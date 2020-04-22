@@ -10,7 +10,7 @@ export const ListWrapper = styled.div`
     line-height: 60px;
     color: ${globalStyle['font-color']};
   }
-`
+`;
 
 export const List = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ export const List = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-`
+`;
 
 export const ListItem = styled.div`
   position: relative;
@@ -65,4 +65,4 @@ export const ListItem = styled.div`
     color: ${globalStyle['font-color-desc']};
     line-height: 1.4;
   }
-`
+`;
