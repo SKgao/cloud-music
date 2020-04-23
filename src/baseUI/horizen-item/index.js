@@ -3,7 +3,7 @@ import Scroll from '../scroll/index';
 import PropTypes from 'prop-types';
 import { List, ListItem } from './style';
 
-const Horizen =(props) => {
+const Horizen = (props) => {
   const Category = useRef(null);
   const { list, oldValue, title, handleClick } = props;
 
