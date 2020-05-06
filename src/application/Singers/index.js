@@ -5,10 +5,10 @@ import LazyLoad, { forceCheck } from 'react-lazyload';
 import Scroll from '../../baseUI/scroll';
 import Loading from '../../baseUI/loading';
 import Horizen from '../../baseUI/horizen-item';
+import { NavContainer, ListContainer, List, ListItem } from './style';
 
 import { actions } from './store';
 import { categoryTypes, alphaTypes } from '../../api/data';
-import { NavContainer, ListContainer, List, ListItem } from './style';
 // actions
 const {
   changePageCount,

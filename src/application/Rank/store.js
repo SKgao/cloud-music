@@ -29,12 +29,12 @@ export const actions = {
   getRankList: () => {
     return (dispatch) => {
       getRankListRequest().then(res => {
-        console.log('getRankListRequest_res', res);
+        console.log('getRankList_res', res);
         dispatch({
           type: actionTypes.CHANGE_RANK_LIST,
           data: fromJS(res.list)
         });
-        dispatch (actions.changeIsLoading(false));
+        dispatch(actions.changeIsLoading(false));
       }).catch (err => {
         console.log ('getRankList_error', err);
       })

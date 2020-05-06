@@ -1,96 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { CSSTransition } from 'react-transition-group';
 import Header from '../../baseUI/header';
+import Loading from '../../baseUI/loading';
+import Scroll from '../../baseUI/scroll';
 import { Container, TopDesc, Menu, SongList, SongItem } from './style';
+import globalStyle from '../../assets/global-style';
+
+import { actions } from './store';
+import { HEADER_HEIGHT } from '../../api/data';
+import { getSingerName, getCount, isEmptyObject } from '../../utils/index';
+// actions
+const { getAlbumList, changeLoading } = actions;
 
 const Album = (props) => {
   const [showStatus, setShowStatus] = useState(true);
+  const [title, setTitle] = useState('歌单');
+  const [isMarquee, setIsMarquee] = useState(false);
+
+  const headerEl = useRef();
+
+  const dispatch = useDispatch();
+  const { currentAlbum, enterLoading } = useSelector(state => ({
+    currentAlbum: state.getIn(['album', 'currentAlbum']).toJS(),
+    enterLoading: state.getIn(['album', 'enterLoading'])
+  }));
+
+  const id = props.match.params.id;
+
+  useEffect(() => {
+    dispatch(changeLoading(true));
+    dispatch(getAlbumList(id));
+    // eslint-disable-next-line
+  }, [id]);
 
   const handleBack = () => {
     setShowStatus(false);
   };
 
-  const currentAlbum = {
-    creator: {
-      avatarUrl: "http://p1.music.126.net/O9zV6jeawR43pfiK2JaVSw==/109951164232128905.jpg",
-      nickname: "浪里推舟"
-    },
-    coverImgUrl: "http://p2.music.126.net/ecpXnH13-0QWpWQmqlR0gw==/109951164354856816.jpg",
-    subscribedCount: 2010711,
-    name: "听完就睡，耳机是天黑以后柔软的梦境",
-    tracks:[
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-      {
-        name: "我真的受伤了",
-        ar: [{name: "张学友"}, {name: "周华健"}],
-        al: {
-          name: "学友 热"
-        }
-      },
-    ]
-  }
+  // 滚动事件
+  const handleScroll = useCallback((pos) => {
+    let minScrollY = -HEADER_HEIGHT;
+    let percent = Math.abs(pos.y / minScrollY);
+    let headerDom = headerEl.current;
+    // 滑过顶部的高度开始变化
+    if (pos.y < minScrollY) {
+      headerDom.style.backgroundColor = globalStyle['theme-color'];
+      headerDom.style.opacity = Math.min(1, (percent - 1) / 2);
+      setTitle(currentAlbum.name);
+      setIsMarquee(true);
+    } else {
+      headerDom.style.backgroundColor = '';
+      headerDom.style.opacity = 1;
+      setTitle('歌单');
+      setIsMarquee(false);
+    }
+  }, [currentAlbum]);
+
+  const renderTopDesc = () => {
+    return (
+      <TopDesc>
+        <div className="bg">
+          <div className="filter"></div>
+        </div>
+        <div className="img-wrapper">
+          <div className="decorate"></div>
+          <img src={currentAlbum.coverImgUrl} alt=""/>
+          <div className="play-count">
+            <i className="iconfont play">&#xe885;</i>
+            <span className="count">{ Math.floor(currentAlbum.subscribedCount / 1000) /10 } 万 </span>
+          </div>
+        </div>
+        <div className="desc-wrapper">
+          <div className="title">{currentAlbum.name}</div>
+          <div className="person">
+            <div className="avatar">
+              <img src={currentAlbum.creator.avatarUrl} alt=""/>
+            </div>
+            <div className="name">{currentAlbum.creator.nickname}</div>
+          </div>
+        </div>
+      </TopDesc>
+    )
+  };
+
+  const renderMenu = () => {
+    return (
+      <Menu>
+        <div>
+          <i className="iconfont">&#xe6ad;</i>评论
+        </div>
+        <div>
+          <i className="iconfont">&#xe86f;</i>点赞
+        </div>
+        <div>
+          <i className="iconfont">&#xe62d;</i>收藏
+        </div>
+        <div>
+          <i className="iconfont">&#xe606;</i>更多
+        </div>
+      </Menu>
+    )
+  };
+
+  const renderSongList = () => {
+    return (
+      <SongList>
+        <div className="first_line">
+          <div className="play_all">
+            <i className="iconfont">&#xe6e3;</i>
+            <span> 播放全部 <span className="sum">(共 {currentAlbum.tracks.length} 首)</span></span>
+          </div>
+          <div className="add_list">
+            <i className="iconfont">&#xe62d;</i>
+            <span> 收藏 ({ getCount(currentAlbum.subscribedCount) })</span>
+          </div>
+        </div>
+        <SongItem>
+          {
+            currentAlbum.tracks.map((item, index) => {
+              return (
+                <li key={index}>
+                  <span className="index">{index + 1}</span>
+                  <div className="info">
+                    <span>{item.name}</span>
+                    <span>
+                      { getSingerName(item.ar) } - { item.al.name }
+                    </span>
+                  </div>
+                </li>
+              )
+            })
+          }
+        </SongItem>
+      </SongList>
+    )
+  };
 
   return (
     <CSSTransition
@@ -101,49 +147,22 @@ const Album = (props) => {
       unmountOnExit
       onExited={props.history.goBack}>
       <Container>
-        <Header title={'返回'} handleClick={handleBack}></Header>
-        <div>
-          <TopDesc>
-            <div className="bg">
-              <div className="filter"></div>
-            </div>
-            <div className="img-wrapper">
-              <div className="decorate"></div>
-              <img src={currentAlbum.coverImgUrl} alt=""/>
-              <div className="play-count">
-                <i className="iconfont play">&#xe885;</i>
-                <span className="count">{Math.floor(currentAlbum.subscribedCount / 1000) /10} 万 </span>
+        <Header ref={headerEl} title={title} handleClick={handleBack} isMarquee={isMarquee}></Header>
+        {
+          currentAlbum && !isEmptyObject(currentAlbum)
+          ?
+          (
+            <Scroll bounceTop={false} onScroll={handleScroll}>
+              <div>
+                { renderTopDesc() }
+                { renderMenu() }
+                { renderSongList() }
               </div>
-            </div>
-            <div className="desc-wrapper">
-              <div className="title">{currentAlbum.name}</div>
-              <div className="person">
-                <div className="avatar">
-                  <img src={currentAlbum.creator.avatarUrl} alt=""/>
-                </div>
-                <div className="name">{currentAlbum.creator.nickname}</div>
-              </div>
-            </div>
-          </TopDesc>
-
-          <Menu>
-            <div>
-              <i className="iconfont">&#xe6ad;</i>评论
-            </div>
-            <div>
-              <i className="iconfont">&#xe86f;</i>点赞
-            </div>
-            <div>
-              <i className="iconfont">&#xe62d;</i>收藏
-            </div>
-            <div>
-              <i className="iconfont">&#xe606;</i>更多
-            </div>
-          </Menu>
-
-          <SongList>
-          </SongList>
-        </div>
+            </Scroll>
+          )
+          : null
+        }
+        { enterLoading ? <Loading></Loading> : null }
       </Container>
     </CSSTransition>
   )

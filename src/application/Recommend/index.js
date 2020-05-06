@@ -7,9 +7,9 @@ import Scroll from '../../baseUI/scroll';
 import Loading from '../../baseUI/loading';
 import Slider from '../../components/slider';
 import RecommendList from '../../components/list';
+import { Content } from './style';
 
 import { actions } from './store';
-import { Content } from './style';
 // actions
 const { getBanner, getRecommendList } = actions;
 

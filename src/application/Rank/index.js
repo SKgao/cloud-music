@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Scroll from '../../baseUI/scroll';
 import Loading from '../../baseUI/loading';
+import { RankContainer, List, ListItem, SongList } from './style';
 
 import { actions } from './store';
 import { filterIndex, filterIdx } from '../../utils/index';
-import { RankContainer, List, ListItem, SongList } from './style';
 import { EnterLoading } from '../Singers/style';
 // actions
 const { getRankList } = actions;
