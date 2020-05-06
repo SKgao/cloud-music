@@ -4,8 +4,8 @@ import { ListWrapper, List, ListItem } from './style';
 import LazyLoad from 'react-lazyload';
 
 const RecommendList = (props) => {
-  const enterDetail = (id) => {
-    props.history.push(`/recommend/${id}`);
+  const enterDetail = id => {
+    id && props.history.push(`/recommend/${id}`);
   };
 
   return (

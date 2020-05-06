@@ -6,6 +6,7 @@ import Rank from '../application/Rank';
 import Recommend from '../application/Recommend';
 import Singers from '../application/Singers';
 import Album from '../application/Album';
+import Singer from '../application/Singer';
 
 // 路由
 const routers = [
@@ -21,6 +22,7 @@ const routers = [
       {
         path: '/recommend',
         component: Recommend,
+        key: 'recommend',
         routes: [
           {
             path: '/recommend/:id',
@@ -30,11 +32,25 @@ const routers = [
       },
       {
         path: '/rank',
-        component: Rank
+        component: Rank,
+        key: 'rank',
+        routes: [
+          {
+            path: '/rank/:id',
+            component: Album
+          }
+        ]
       },
       {
         path: '/singers',
-        component: Singers
+        component: Singers,
+        key: 'singers',
+        routes: [
+          {
+            path: '/singers/:id',
+            component: Singer
+          }
+        ]
       }
     ]
   }

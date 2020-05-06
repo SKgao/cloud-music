@@ -7,7 +7,7 @@ import Loading from '../../baseUI/loading';
 import { RankContainer, List, ListItem, SongList } from './style';
 
 import { actions } from './store';
-import { filterIndex, filterIdx } from '../../utils/index';
+import { filterIndex } from '../../utils/index';
 import { EnterLoading } from '../Singers/style';
 // actions
 const { getRankList } = actions;
@@ -30,10 +30,9 @@ const Rank = (props) => {
   }, []);
 
   // 进入详情页
-  const enterDetail = (name) => {
-    const idx = filterIdx(name);
-    if (idx) {
-      console.log(name, idx);
+  const enterDetail = (detail) => {
+    if (detail.id) {
+      props.history.push (`/rank/${detail.id}`)
     } else {
       console.log('暂无相关数据');
     }
@@ -46,7 +45,7 @@ const Rank = (props) => {
         {
           list.map((item) => {
             return (
-              <ListItem key={item.coverImgId} tracks={item.tracks} onClick={() => enterDetail(item.name)}>
+              <ListItem key={item.coverImgId} tracks={item.tracks} onClick={() => enterDetail(item)}>
                 <div className="img-wrapper">
                   <img src={item.coverImgUrl} alt=""/>
                   <div className="decorate"></div>

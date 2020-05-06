@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { renderRoutes } from 'react-router-config';
 import { useSelector, useDispatch } from 'react-redux';
 import LazyLoad, { forceCheck } from 'react-lazyload';
 
@@ -19,7 +20,7 @@ const {
   getSingerList
 } = actions;
 
-const Singers = () => {
+const Singers = (props) => {
   const [category, setCategory] = useState('');
   const [alpha, setAlpha] = useState('');
 
@@ -78,6 +79,10 @@ const Singers = () => {
     }
   };
 
+  const enterDetail = id => {
+    id && props.history.push(`/singers/${id}`);
+  }
+
   // 渲染歌手列表
   const renderSingerList = () => {
     return (
@@ -85,7 +90,7 @@ const Singers = () => {
         {
           singerList.map((item, index) => {
             return (
-              <ListItem key={index}>
+              <ListItem key={index} onClick={() => enterDetail(item.id)}>
                 <div className="img-wrapper">
                   <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="Singer"/>}>
                     <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="Singer"/>
@@ -101,7 +106,7 @@ const Singers = () => {
   };
 
   return (
-    <>
+    <div>
       <NavContainer>
         <Horizen
           list={categoryTypes}
@@ -128,7 +133,9 @@ const Singers = () => {
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
-    </>
+
+      { renderRoutes (props.route.routes) }
+    </div>
   )
 }
 
