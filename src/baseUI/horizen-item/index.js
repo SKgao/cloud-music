@@ -14,7 +14,6 @@ const Horizen = (props) => {
     Array.from(spans).forEach(el => {
       totalWidth += el.offsetWidth;
     });
-    console.log(totalWidth);
     categoryDom.style.width = `${totalWidth}px`;
   }, []);
 
